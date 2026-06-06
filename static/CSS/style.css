@@ -1,0 +1,90 @@
+*{
+    box-sizing: border-box;
+}
+:root{
+    --ligh_back_color: rgb(247, 246, 183);
+    --accent_color: rgb(142, 235, 123);
+    --text-color: black;
+    --accent_text_color: rgb(124, 50, 7);
+}
+html, body{
+    margin: 0;
+    padding: 0;
+    color: var(--text_color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body{
+    background-color: var(--ligh_back_color);
+    background-image: url("../images/noisy-texture.png");
+}
+header{
+    background-color: var(--accent_color);
+    color: var(--accent_text_color);
+}
+header>h1{
+    margin: 0;
+    padding: .5em;
+    text-align: center;
+}
+main{
+    width: 86%;
+    min-height: 10em;
+    margin: 2em auto;
+    padding: 1em;
+    background-color: white;
+}
+pre{
+    padding: .5em;
+    font-family: monospace;
+    font-size: 1.2em;
+    overflow-x: auto;
+}
+textarea{
+    resize: vertical;
+    width: 100%;
+    min-width: 20%;
+    max-width: 100%;
+    min-height: 3em;
+}
+table{
+    display: block;
+    overflow: auto;
+    /* background-color: aqua; */
+    max-width: 100%;
+}
+input[type="button"], input[type="submit"], .custom-file-upload{
+    position: relative;
+    display: inline-block;
+    background-color: var(--accent_color);
+    line-height: 2em;
+    font-size: 1.1em;
+    padding: 0 .5em;
+    margin-top: .5em;
+    color: var(--accent_text_color);
+}
+input[type="button"]:hover, input[type="submit"]:hover, .custom-file-upload:hover{
+    filter: brightness(0.9);
+}
+.custom-file-upload{
+    background-color: var(--ligh_back_color);
+}
+.border{
+    border: 1px solid rgba(127, 127, 127, 0.5);
+}
+.shadow{
+    box-shadow: 0 .1em .5em -.2em rgba(0, 0, 0, 0.4);
+}
+.rounded{
+    border-radius: .6em;
+}
+.min_rounded{
+    border-radius: .2em;
+}
+.text-center{
+    text-align: center;
+}
+@media screen and (width < 520px) {
+    main{
+        width: 100%;
+    }
+}

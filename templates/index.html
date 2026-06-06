@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <title>{{data.title}}</title>
+</head>
+<body>
+    <header class="shadow">
+        <h1>{{data.title}}</h1>
+    </header>
+    <main class="shadow rounded">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <textarea autocomplete="off" id="textarea" name="load_text" rows="8" cols="64" class="border min_rounded">{{data.text}}</textarea>
+            <input type="submit" value="Сохранить" class="border min_rounded">
+            
+            <input type="file" id="real-input" hidden name="file">
+            <label for="real-input" class="custom-file-upload border min_rounded">Загрузить файл</label>
+            <span> * после загрузки файла сохраните изменения</span>
+        </form>
+        <p>Файлы:</p>
+        <table id="files-table">
+            {% for i in data.files %}
+            <tr>
+                <td class="border"><a href="{{ url_for('download', filename=i) }}" >{{ i }}</a> </td>
+                <td class="border"><a href="{{ url_for('delete', filename=i) }}" style="color:red">Удалить</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+       
+        <p>Текущий текст:</p>
+        <pre id="sendtext">{{data.text}}</pre>
+    </main>
+</body>
+<script>
+    let cli_ver_text = 0;
+    let cli_ver_files = 0;
+
+    function setTextOnPage(text){
+        document.getElementById('sendtext').innerHTML = text;
+        document.getElementById('textarea').innerHTML = text;
+    }
+
+    async function setFileList(files) {
+        const table = document.querySelector('#files-table');
+        // console.log(table)
+        table.innerHTML = '';
+    
+        files.forEach(file => {
+            const row = table.insertRow();
+            const nameCell = row.insertCell(0);
+            nameCell.className = 'border';
+            const link = document.createElement('a');
+            link.href = file.url;
+            link.textContent = file.name;
+            nameCell.appendChild(link);
+        
+            // Ячейка с кнопкой удаления
+            const deleteCell = row.insertCell(1);
+            deleteCell.className = 'border';
+            const deleteLink = document.createElement('a');
+            deleteLink.href = `/delete/${file.name}`;
+            deleteLink.textContent = 'Удалить';
+            deleteLink.style.color = 'red';
+            deleteCell.appendChild(deleteLink);
+        });
+    }
+
+    async function updateContent() {
+        const response = await fetch('/api/versions');
+        const json_obj = await response.json();
+        let serv_ver_text = json_obj["id_text"];
+        let serv_ver_files = json_obj["id_files"];
+
+        if (serv_ver_text > cli_ver_text){
+            const response = await fetch('/api/data');
+            const json_obj = await response.json();
+            let newText = json_obj["text"];
+            setTextOnPage(newText)
+            cli_ver_text = serv_ver_text;
+        }
+
+        if (serv_ver_files > cli_ver_files){
+            const response = await fetch('/api/data');
+            const json_obj = await response.json();
+            let newFilesLinks = json_obj["files"];
+            setFileList(newFilesLinks)
+            cli_ver_files = serv_ver_files;
+        }
+        
+    }
+
+    setInterval(updateContent, 3000);
+</script>
+</html>

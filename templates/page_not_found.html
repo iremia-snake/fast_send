@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <title>Не найден</title>
+</head>
+<body>
+    <main class="rounded shadow">
+        <h1 class="text-center" style="font-size: 10em; color: grey;">404</h1>
+        <h1 class="text-center">То, что вы ищете, скрылось в тумане</h1>
+        <h2 class="text-center"><a href="{{ url_for('handle') }}">Назад</a></h2>
+    </main>
+</body>
+</html>
