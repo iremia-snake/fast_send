@@ -1,4 +1,4 @@
-class DataFile:
+class DataFileHandlert:
     def __init__(self, path):
         self.path = path
 
@@ -8,7 +8,7 @@ class DataFile:
             with open(self.path, 'w', encoding='utf-8') as file:
                 text = text.replace('\r\n', '\n').replace('\r', '\n')
                 file.write(text)
-            return 0
+            return None
         except Exception as e:
             return e
 

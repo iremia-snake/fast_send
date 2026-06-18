@@ -24,6 +24,7 @@
         <table id="files-table">
             {% for i in data.files %}
             <tr>
+                <td class="border"><a href="{{ url_for('download', filename=i) }}" download>Загрузить</a> </td>
                 <td class="border"><a href="{{ url_for('download', filename=i) }}" >{{ i }}</a> </td>
                 <td class="border"><a href="{{ url_for('delete', filename=i) }}" style="color:red">Удалить</a></td>
             </tr>
@@ -35,8 +36,8 @@
     </main>
 </body>
 <script>
-    let cli_ver_text = 0;
-    let cli_ver_files = 0;
+    let cli_ver_text = -1;
+    let cli_ver_files = -1;
 
     function setTextOnPage(text){
         document.getElementById('sendtext').innerHTML = text;
@@ -45,25 +46,44 @@
 
     async function setFileList(files) {
         const table = document.querySelector('#files-table');
-        // console.log(table)
         table.innerHTML = '';
     
         files.forEach(file => {
             const row = table.insertRow();
-            const nameCell = row.insertCell(0);
+
+            // ссылка для скачивания
+            const downloadCell = row.insertCell(0);
+            downloadCell.className = 'border';
+            const downloadLink = document.createElement('a');
+            downloadLink.href = file.url;
+            downloadLink.setAttribute('download', '');
+            downloadLink.textContent = 'Загрузить';
+
+            downloadCell.appendChild(downloadLink);
+
+            // ссылка на файл
+            const nameCell = row.insertCell(1);
             nameCell.className = 'border';
             const link = document.createElement('a');
             link.href = file.url;
-            link.textContent = file.name;
+            var max_length = 32;
+            if (file.name.length > max_length){
+                name_arr = file.name.split('.')
+                link.textContent = file.name.slice(0, max_length-6)+'...' + name_arr[name_arr.length-1];
+            }else{
+                link.textContent = file.name
+            }
             nameCell.appendChild(link);
         
             // Ячейка с кнопкой удаления
-            const deleteCell = row.insertCell(1);
+            const deleteCell = row.insertCell(2);
             deleteCell.className = 'border';
+
             const deleteLink = document.createElement('a');
             deleteLink.href = `/delete/${file.name}`;
             deleteLink.textContent = 'Удалить';
             deleteLink.style.color = 'red';
+
             deleteCell.appendChild(deleteLink);
         });
     }
@@ -92,6 +112,7 @@
         
     }
 
+    // updateContent();
     setInterval(updateContent, 3000);
 </script>
 </html>
