@@ -2,13 +2,18 @@ from flask import Flask, request, redirect, url_for, send_from_directory
 from flask import render_template
 from common_data import CommonTextHandler, CommonFilesHandler
 from time import sleep
-
+import os
 
 app = Flask("Fast_Text")
 
+
 app.config['UPLOAD_FOLDER'] = './media/files/'
+os.makedirs(app.config['UPLOAD_FOLDER'])
+f = open('./media/text.txt', mode='x')
+f.close()
 comText = CommonTextHandler('./media/text.txt')
 comFiles = CommonFilesHandler('./media/files')
+
 
 comText.read_file()
 
