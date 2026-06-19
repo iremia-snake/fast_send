@@ -1,1 +1,3 @@
 media/files/*
+venv
+__pycache__

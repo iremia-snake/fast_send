@@ -60,7 +60,6 @@ def api_data():
     for i in list_files:
         link_list.append({"name":i, "url": '/uploads/' + i})
     return {"text": comText.get_text(), "files": link_list}
-    return
 
 
 @app.errorhandler(404)
