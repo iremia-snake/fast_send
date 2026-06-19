@@ -8,9 +8,12 @@ app = Flask("Fast_Text")
 
 
 app.config['UPLOAD_FOLDER'] = './media/files/'
-os.makedirs(app.config['UPLOAD_FOLDER'])
-f = open('./media/text.txt', mode='x')
-f.close()
+try:
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+    f = open('./media/text.txt', mode='x')
+    f.close()
+except:
+    pass
 comText = CommonTextHandler('./media/text.txt')
 comFiles = CommonFilesHandler('./media/files')
 
